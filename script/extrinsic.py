@@ -9,10 +9,6 @@ def draw(img, corners):
             cv2.circle(img,tuple(j), 3, (0,0,255), -1)
     cv2.circle(img, tuple(corners[0][0]), 4, (255,0,0), -1)
     
-    # corner = tuple(corners[0].ravel())
-    # img = cv2.line(img, corner, tuple(imgpts[0].ravel()), (255,0,0), 5)
-    # img = cv2.line(img, corner, tuple(imgpts[1].ravel()), (0,255,0), 5)
-    # img = cv2.line(img, corner, tuple(imgpts[2].ravel()), (0,0,255), 5)
     return img
 
 if __name__ == "__main__": 
@@ -41,7 +37,8 @@ if __name__ == "__main__":
     while True:
         ret, img = cap.read()
         gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-        ret, corners = cv2.findChessboardCorners(img, (row_num,column_num),None)
+        ret, corners = cv2.findChessboardCorners(img, (row_num,column_num),None,8) # 8 means CALIB_CB_FAST_CHECK
+        # cv2.findCirclesGridDefault(img, (row_num,column_num), )
         if ret == True:
             cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
             
