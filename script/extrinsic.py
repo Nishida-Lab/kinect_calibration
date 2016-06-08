@@ -7,6 +7,7 @@ def draw(img, corners):
     for i in corners :
         for j in i :
             cv2.circle(img,tuple(j), 3, (0,0,255), -1)
+    cv2.circle(img, tuple(corners[0][0]), 4, (255,0,0), -1)
     
     # corner = tuple(corners[0].ravel())
     # img = cv2.line(img, corner, tuple(imgpts[0].ravel()), (255,0,0), 5)
