@@ -14,7 +14,7 @@ class ExtrinsicCalibration(object):
         # == Point Informations ==
         self.row        = row      # Row number of points
         self.column     = column   # Column number of points
-        self.size       = size+size # Distans between points (unit is [m])
+        self.size       = size # Distans between points (unit is [m])
         # Criteria of Points
         self.criteria   = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
         # Point numbers calculate from Row and Column numbers
