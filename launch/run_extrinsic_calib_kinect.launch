@@ -1,5 +1,14 @@
 <launch>
 
+  <node pkg="tf" type="static_transform_publisher" name="world_to_board1"
+  		args="0.071 -0.075 0.243 1.57079632679 0 -1.57079632679 world board1 10" />
+
+   <!-- <node pkg="tf" type="static_transform_publisher" name="world_to_board2" -->
+   <!-- 		args="0.091 -0.07 0.243 1.57079632679 0 -1.57079632679 world board2 10" /> -->
+
+  <!-- <node pkg="tf" type="static_transform_publisher" name="dhand_palm_to_board2" -->
+  <!-- 		args="0.083 0.0675 -0.04  -1.57079632679 0 1.57079632679 dhand_palm_link board2 10" /> -->
+  
   <node pkg="kinect_calibration" type="run_extrinsic_calib.py" name="kinect_ex_calib_first" output="screen">
   	<param name="cam_info_topic" value="/kinect_first/hd/camera_info"/>
   	<param name="image_topic" value="/kinect_first/hd/image_color"/>
