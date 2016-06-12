@@ -67,6 +67,8 @@ class ExtrinsicCalibration(object):
             self.rotmx, jac, = cv2.Rodrigues(self.rvecs)
             # Get eular from Rotation Matrix
             self.roll, self.pitch, self.yaw = self.rotationMatrixToEulerAngles(self.rotmx)
+            self.inv_roll, self.inv_pitch, self.inv_yaw = self.rotationMatrixToEulerAngles(self.rotmx.T)
+            self.inv_tvecs = -np.dot(self.rotmx.T, self.tvecs)
         return ret
 
     # Calculates rotation matrix to euler angles
