@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import cv2
+from math import *
 
 import rospy
 # Camera
+import cv2
 from sensor_msgs.msg import CameraInfo
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
@@ -20,7 +21,8 @@ class getTFbyExtrinsicCalib(object):
     def __init__(self):
         self.caminfo_sub_topic = rospy.get_param('~cam_info_topic')
         self.image_sub_topic = rospy.get_param('~image_topic')
-        self.frame = rospy.get_param('~frame_name')
+        self.rgb_frame = rospy.get_param('~rgb_frame_name')
+        self.link_frame = rospy.get_param('~link_frame_name')
         self.object_frame = rospy.get_param('~object_frame_name')
         self.row = rospy.get_param('~row_num')
         self.column = rospy.get_param('~column_num')
@@ -37,23 +39,38 @@ class getTFbyExtrinsicCalib(object):
         img = self.bridge.imgmsg_to_cv2(message, "bgr8")
         ret = self.ex_calib.calibrate(img, self.target_type)
         if ret is True :
-            br = tf2_ros.TransformBroadcaster()
-            t = geometry_msgs.msg.TransformStamped()
-            t.header.stamp = rospy.Time.now()
-            t.header.frame_id = self.object_frame
-            t.child_frame_id = self.frame
+            br_rgb = tf2_ros.TransformBroadcaster()
+            br_link = tf2_ros.TransformBroadcaster()
+            t_rgb = geometry_msgs.msg.TransformStamped()
+            t_link = geometry_msgs.msg.TransformStamped()
+            t_rgb.header.stamp = rospy.Time.now()
+            t_rgb.header.frame_id = self.object_frame
+            t_rgb.child_frame_id = self.rgb_frame
+            t_link.header.stamp = t_rgb.header.stamp
+            t_link.header.frame_id = t_rgb.child_frame_id
+            t_link.child_frame_id = self.link_frame
 
-            t.transform.translation.x = self.ex_calib.inv_tvecs[0][0]
-            t.transform.translation.y = self.ex_calib.inv_tvecs[1][0]
-            t.transform.translation.z = self.ex_calib.inv_tvecs[2][0]
-            q = tf.transformations.quaternion_from_euler(self.ex_calib.inv_roll, self.ex_calib.inv_pitch, self.ex_calib.inv_yaw)
-            t.transform.rotation.x = q[0]
-            t.transform.rotation.y = q[1]
-            t.transform.rotation.z = q[2]
-            t.transform.rotation.w = q[3]
-
-            br.sendTransform(t)
-            rospy.loginfo("Get a Image")
+            t_rgb.transform.translation.x = self.ex_calib.inv_tvecs[0][0]
+            t_rgb.transform.translation.y = self.ex_calib.inv_tvecs[1][0]
+            t_rgb.transform.translation.z = self.ex_calib.inv_tvecs[2][0]
+            t_link.transform.translation.x = 0.0
+            t_link.transform.translation.y = 0.0
+            t_link.transform.translation.z = 0.0
+            
+            q_rgb = tf.transformations.quaternion_from_euler(self.ex_calib.inv_roll, self.ex_calib.inv_pitch, self.ex_calib.inv_yaw)
+            t_rgb.transform.rotation.x = q_rgb[0]
+            t_rgb.transform.rotation.y = q_rgb[1]
+            t_rgb.transform.rotation.z = q_rgb[2]
+            t_rgb.transform.rotation.w = q_rgb[3]
+            q_link = tf.transformations.quaternion_from_euler(pi/2.0, -pi/2.0, 0)
+            t_link.transform.rotation.x = q_link[0]
+            t_link.transform.rotation.y = q_link[1]
+            t_link.transform.rotation.z = q_link[2]
+            t_link.transform.rotation.w = q_link[3]
+            
+            br_rgb.sendTransform(t_rgb)
+            br_link.sendTransform(t_link)
+            #rospy.loginfo("Get a Image")
             
         else :
             rospy.logwarn("Failed to get Pose")
