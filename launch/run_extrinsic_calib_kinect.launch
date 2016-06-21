@@ -1,34 +1,45 @@
 <launch>
 
   <node pkg="tf" type="static_transform_publisher" name="world_to_board1"
-  		args="0.071 -0.075 0.243 1.57079632679 0 -1.57079632679 world board1 10" />
+  		args="0.091 -0.075 0.243 1.57079632679 0 -1.57079632679 world board1 10" />
 
-   <!-- <node pkg="tf" type="static_transform_publisher" name="world_to_board2" -->
-   <!-- 		args="0.091 -0.07 0.243 1.57079632679 0 -1.57079632679 world board2 10" /> -->
-
-  <!-- <node pkg="tf" type="static_transform_publisher" name="dhand_palm_to_board2" -->
-  <!-- 		args="0.083 0.0675 -0.04  -1.57079632679 0 1.57079632679 dhand_palm_link board2 10" /> -->
+  <node pkg="tf" type="static_transform_publisher" name="world_to_board2"
+  		args="0.091 -0.075 0.243 1.57079632679 0 -1.57079632679 world board2 10" />
   
-  <node pkg="kinect_calibration" type="run_extrinsic_calib.py" name="kinect_ex_calib_first" output="screen">
-  	<param name="cam_info_topic" value="/kinect_first/hd/camera_info"/>
-  	<param name="image_topic" value="/kinect_first/hd/image_color"/>
-  	<param name="frame_name" value="kinect_first_rgb_optical_frame"/>
-  	<param name="object_frame_name" value="board1"/>
-  	<param name="row_num" type="int" value="5"/>
-  	<param name="column_num" type="int" value="7"/>
-  	<param name="size" type="double" value="0.035"/>
-  	<param name="target_type" type="int" value="0"/>
-  </node>
+   <!-- <node pkg="tf" type="static_transform_publisher" name="world_to_board2" -->
+   <!-- 		 args="0.493 0.317 0.1845 3.14159265359 0 -1.57079632679 world board2 10" /> -->
+   
+  <!-- <node pkg="kinect_calibration" type="run_extrinsic_calib.py" name="kinect_ex_calib_first"> -->
+  <!-- 	<param name="cam_info_topic" value="/kinect_first/hd/camera_info"/> -->
+  <!-- 	<param name="image_topic" value="/kinect_first/hd/image_color"/> -->
+  <!-- 	<param name="rgb_frame_name" value="kinect_first_rgb_optical_frame"/> -->
+  <!-- 	<param name="link_frame_name" value="kinect_first_link"/> -->
+  <!-- 	<param name="object_frame_name" value="board1"/> -->
+  <!-- 	<param name="row_num" type="int" value="5"/> -->
+  <!-- 	<param name="column_num" type="int" value="7"/> -->
+  <!-- 	<param name="size" type="double" value="0.035"/> -->
+  <!-- 	<param name="target_type" type="int" value="0"/> -->
+  <!-- </node> -->
 
-  <node pkg="kinect_calibration" type="run_extrinsic_calib.py" name="kinect_ex_calib_second" output="screen">
+  <node pkg="kinect_calibration" type="run_extrinsic_calib.py" name="kinect_ex_calib_second">
   	<param name="cam_info_topic" value="/kinect_second/hd/camera_info"/>
   	<param name="image_topic" value="/kinect_second/hd/image_color"/>
-  	<param name="frame_name" value="kinect_second_rgb_optical_frame"/>
+  	<param name="rgb_frame_name" value="kinect_second_rgb_optical_frame"/>
+  	<param name="link_frame_name" value="kinect_second_link"/>
   	<param name="object_frame_name" value="board2"/>
   	<param name="row_num" type="int" value="5"/>
   	<param name="column_num" type="int" value="7"/>
   	<param name="size" type="double" value="0.035"/>
   	<param name="target_type" type="int" value="0"/>
   </node>
+
+  <!-- <node pkg="kinect_calibration" type="tf_listner.py" name="kinect_tf_first" output="screen"> -->
+  <!-- 	<param name="kinect_frame_name" value="kinect_first_link"/> -->
+  <!-- </node> -->
+  
+  <node pkg="kinect_calibration" type="tf_listner.py" name="kinect_tf_second" output="screen">
+  	<param name="kinect_frame_name" value="kinect_second_link"/>
+  </node>
+
   
 </launch>
