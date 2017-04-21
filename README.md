@@ -1,5 +1,5 @@
 # Kinect V2のキャリブレーションファイル保存場所
-![img](.image/header.jpg)
+![img](.images/header.jpg)
 
 キャリブレーションをしたらここに保存しておくこと。
 
