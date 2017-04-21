@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="kinect_calibration" type="tf_listner.py" name="kinect_tf_first" output="screen">
+  	<param name="kinect_frame_name" value="kinect_first_link"/>
+  </node>
+</launch>

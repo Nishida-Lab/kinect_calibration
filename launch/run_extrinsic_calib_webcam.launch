@@ -1,0 +1,29 @@
+<launch>
+
+  <node pkg="tf" type="static_transform_publisher" name="world_to_cam" 
+		args="0 0 0.5 -1.57 0 -1.57 world camera 10" />
+  <node ns="camera" pkg="image_proc" type="image_proc" name="image_proc"/>
+  <node ns="camera" pkg="uvc_camera" type="uvc_camera_node" name="uvc_camera"
+		output="screen">
+    <param name="width" type="int" value="320" />
+    <param name="height" type="int" value="240" />
+    <param name="fps" type="int" value="30" />
+    <param name="frame" type="string" value="camera" />
+    <param name="device" type="string" value="/dev/video0" />
+    <param name="camera_info_url" type="string"
+		   value="file://$(find kinect_calibration)/data/webcam/logicool/camera_calibration.yaml" />
+	<param name="auto_focus" type="bool" value="False" />
+    <param name="focus_absolute" type="int" value="0" />
+  </node>
+  
+  <node pkg="kinect_calibration" type="run_extrinsic_calib.py" name="kinect_ex_calib" output="screen">
+  	<param name="cam_info_topic" value="/camera/camera_info"/>
+  	<param name="image_topic" value="/camera/image_color"/>
+  	<param name="frame_name" value="camera"/>
+  	<param name="object_frame_name" value="object"/>
+  	<param name="row_num" type="int" value="5"/>
+  	<param name="column_num" type="int" value="7"/>
+  	<param name="size" type="double" value="0.035"/>
+  	<param name="target_type" type="int" value="0"/>
+  </node>
+</launch>

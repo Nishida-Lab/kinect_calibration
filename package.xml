@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>kinect_calibration</name>
+  <version>0.0.1</version>
+  <description>The kinect_calibration package</description>
+  
+ <maintainer email="groadpg@gmail.com">RyodoTanaka</maintainer>
+  <license>BSD</license>
+  <url type="repository">http://github.com/Nishida-Lab/kinect_calibration</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  
+</package>
